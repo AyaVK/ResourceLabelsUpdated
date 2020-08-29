@@ -152,6 +152,26 @@ function createLabelForResourcePatch(player, surface, patch)
         local entity = table.first(patch)
         local signalID = getSignalID(entity)
 
+        --no label for resource patches with these entities disabled
+        if getLabel(entity) == "Stone" and global.settings["resource-labels-hide-stone"] then
+          return
+        end 
+        if getLabel(entity) == "Coal" and global.settings["resource-labels-hide-coal"] then
+          return
+        end 
+        if getLabel(entity) == "Iron" and global.settings["resource-labels-hide-iron"] then
+          return
+        end 
+        if getLabel(entity) == "Copper" and global.settings["resource-labels-hide-copper"] then
+          return
+        end 
+        if getLabel(entity) == "Uranium" and global.settings["resource-labels-hide-uranium"] then
+          return
+        end 
+        if getLabel(entity) == "Oil" and global.settings["resource-labels-hide-oil"] then
+          return
+        end 
+
         --no label for resource patches with less than specified amount of entities
         if signalID and signalID.type == "item" and #patch <= global.settings["resource-labels-minimum-resource-entity-count"] then
             return
@@ -163,8 +183,11 @@ function createLabelForResourcePatch(player, surface, patch)
                 return
             end
         else
-            --no label if the resource count is less than specified in the mod settings
+            --no label if the resource count is less or more than specified in the mod settings
             if getResourceCount(patch) <= global.settings["resource-labels-minimum-resource-count"] then
+                return
+            end
+            if getResourceCount(patch) >= global.settings["resource-labels-maximum-resource-count"] then
                 return
             end
         end
@@ -341,8 +364,15 @@ function cacheSettings()
     cacheSetting(settings, "resource-labels-show-resource-count")
     cacheSetting(settings, "resource-labels-show-infinite-ores")
     cacheSetting(settings, "resource-labels-minimum-resource-count")
+    cacheSetting(settings, "resource-labels-maximum-resource-count")
     cacheSetting(settings, "resource-labels-minimum-resource-entity-count")
     cacheSetting(settings, "resource-labels-show-unknown-entity-msg")
+    cacheSetting(settings, "resource-labels-hide-coal")
+    cacheSetting(settings, "resource-labels-hide-stone")
+    cacheSetting(settings, "resource-labels-hide-oil")
+    cacheSetting(settings, "resource-labels-hide-iron")
+    cacheSetting(settings, "resource-labels-hide-copper")
+    cacheSetting(settings, "resource-labels-hide-uranium")
     global.settings = settings
 end
 

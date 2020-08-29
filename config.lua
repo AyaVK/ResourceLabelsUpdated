@@ -272,4 +272,5 @@ addInfiniteItem("angels-ore6")
 -- Hide resources here
 -- hide("coal")
 
+
 return ResourceConfig
